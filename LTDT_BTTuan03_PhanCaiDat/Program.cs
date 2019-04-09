@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections;
 
 namespace LTDT_BTTuan03_PhanCaiDat
 {
@@ -12,8 +13,7 @@ namespace LTDT_BTTuan03_PhanCaiDat
         static void Main(string[] args)
         {
             GRAPH g = new GRAPH();
-            //string input_filename = @"D:\STUDY\IT\Semester3\GraphTheory\4_Projects\LTDT_BTTuan02_PhanCaiDat\input.txt";
-            string input_filename = "../../input.txt";
+            string input_filename = "../../../input.txt";
             //string input_filename = args[0];
             findConnectedComponents(input_filename, g);
             Console.ReadLine();
@@ -47,42 +47,62 @@ namespace LTDT_BTTuan03_PhanCaiDat
                         reader.Close();
 
                         //Step 1:
-                        int label = 0;
-                        LinkedList<int> label0List = new LinkedList<int>();
-                        for (i = 0; i < n; i++)
-                        {
-                            label0List.AddLast(i);
-                        }
+                        int label = 1;
+                        ArrayList visitedList = new ArrayList();
+                        ArrayList notVisitedList = new ArrayList();
+                        int[] visitedArray = new int[n];
+                        Stack<int> stack = new Stack<int>();
 
-                        //Step 2:
+                        //Add all vertex into notVisitedList
                         for (i = 0; i < n; i++)
-                        {
-                            if (label0List.FirstOrDefault() == i)
-                            {
-                                label++;
-                                visit(g, i, label);
-                            }
-                        }
-                        
-                        /*
-                        LinkedList<int> firstList = new LinkedList<int>();
-                        LinkedList<int> VisitedList = new LinkedList<int>();
-                        int[] visit = new int[n];
-                        
-                        for (int j = 0; j < n; j++)
-                        {
-                            firstList.AddFirst(j);
-                        }
-                        VisitedList.AddFirst(i);
-                        visit[i] = 1;
+                            notVisitedList.Add(i);
+
+                        //Visit the first vertex and add label 1 for it and remove it from notVisitedList
+                        visitedList.Add(i);
+                        visitedArray[i] = 1;
                         stack.Push(i);
-                        if (true)
+                        notVisitedList.Remove(i);
+                         
+                        while (stack.Count != 0)
                         {
-                            label++;
-                            visit(i, label);
-                        }
-                        */
-
+                            i = stack.Peek();
+                            int count = 0;
+                            for (int j = 0; j < n; j++)
+                            {
+                                if (g.matrix[i, j] > 0 && visitedArray[j] != 1)
+                                {
+                                    visitedArray[j] = 1;
+                                    visitedList.Add(j);
+                                    stack.Push(j);
+                                    for (int k = 0; k < visitedList.Count; k++)
+                                    {
+                                        if (int.Parse(notVisitedList[k].ToString()) == j)
+                                        {
+                                            notVisitedList.Remove(k);
+                                        }
+                                    }
+                                    break;
+                                }
+                                else
+                                    count++;
+                            }
+                            if (count == n)
+                            {
+                                Console.WriteLine("So thanh phan lien thong: " +label);
+                                for (i = 0; i < visitedList.Count; i++)
+                                    Console.WriteLine(visitedList[i] + " ==> ");
+                                if (notVisitedList.Count != 0)
+                                {
+                                    i = int.Parse(notVisitedList[0].ToString());
+                                    label++;
+                                    stack.Clear();
+                                    stack.Push(i);
+                                    visitedList.Clear();
+                                }
+                                else
+                                    break;
+                            }
+                        }                        
                     }
                     else
                         Console.WriteLine("The number of Vertexes must be greater than 2.");
