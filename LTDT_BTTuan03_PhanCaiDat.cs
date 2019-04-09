@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,7 +62,7 @@ namespace LTDT_BTTuan03_PhanCaiDat
                         visitedArray[i] = 1;
                         stack.Push(i);
                         notVisitedList.Remove(i);
-                         
+
                         while (stack.Count != 0)
                         {
                             i = stack.Peek();
@@ -88,7 +88,7 @@ namespace LTDT_BTTuan03_PhanCaiDat
                             }
                             if (count == n)
                             {
-                                Console.WriteLine("So thanh phan lien thong: " +label);
+                                Console.WriteLine("So thanh phan lien thong: " + label);
                                 for (i = 0; i < visitedList.Count; i++)
                                     Console.WriteLine(visitedList[i] + " ==> ");
                                 if (notVisitedList.Count != 0)
@@ -102,7 +102,7 @@ namespace LTDT_BTTuan03_PhanCaiDat
                                 else
                                     break;
                             }
-                        }                        
+                        }
                     }
                     else
                         Console.WriteLine("The number of Vertexes must be greater than 2.");
@@ -119,7 +119,7 @@ namespace LTDT_BTTuan03_PhanCaiDat
             LinkedList<int> labelList = new LinkedList<int>();
             for (int j = 0; j < g.numberOfVertexes; j++)
             {
-                if (g.matrix[i,j] > 0 && label == 0)
+                if (g.matrix[i, j] > 0 && label == 0)
                 {
                     visit(g, j, label);
                 }
